@@ -1,0 +1,10 @@
+#vscode
+.vscode
+
+#python
+.venv
+__init__.py
+__pycache__
+
+
+notes.txt
