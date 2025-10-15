@@ -3,7 +3,7 @@ from automaton.fsm import EpsNFA
 from common.typedef import Symbol
 
 
-def regex_to_epsnfa(expr: Expr) -> EpsNFA:
+def regex_to_epsnfa(expr: Expr) -> EpsNFA:  # AI gen
     """Convert a regex AST to an equivalent epsilon-NFA."""
     if isinstance(expr, Symbol):
         return EpsNFA.from_symbol(Symbol(expr.value))

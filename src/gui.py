@@ -1,24 +1,22 @@
 # type: ignore
+# AI gen
 from common.parser_utils import ParserError
 from common.typedef import Symbol
 from regex.ast import Expr
-from automaton.fsm import DFA, NFA, EpsNFA
+from automaton.fsm import DFA, NFA, EpsNFA, FSMType
 from automaton.parser import parse_automaton
 from automaton.lexer import lex_automaton
 from automaton.convert import convert_to_nfa, convert_to_dfa
 from regex.to_epsnfa import regex_to_epsnfa
 from regex.parser import parse_regex
 from regex.lexer import lex_regex
-from typing import Optional, Union, List
+from typing import Optional, List
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import Frame, Text, Button, Label, Scrollbar, Entry, BOTH, RIGHT, Y, LEFT, END, TOP, BOTTOM, DISABLED, NORMAL, messagebox
 import matplotlib.pyplot as plt
 import networkx as nx
 import traceback
 import sys
-
-
-FSMType = Union[DFA, NFA, EpsNFA]
 
 
 def _format_value(value) -> str:

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Generic, TypeVar, Set, Dict, Tuple, FrozenSet, Iterable, List
+from typing import Generic, TypeVar, Set, Dict, Tuple, FrozenSet, Iterable, List, Union
 from abc import ABC, abstractmethod
 from functools import reduce
 from common.typedef import State, Symbol
@@ -136,7 +136,7 @@ class EpsNFA(NFA):
         })
 
     @classmethod
-    def _fresh_state(cls, base: str = "S") -> State:
+    def _fresh_state(cls, base: str = "S") -> State:  # AI gen
         cls._id_counter += 1
         return State(f"${base}{cls._id_counter}")
 
@@ -221,3 +221,6 @@ class EpsNFA(NFA):
             {initial_state: {lhs.INITIAL_STATE, rhs.INITIAL_STATE}} |
             lhs.EPS_TRANSITIONS | rhs.EPS_TRANSITIONS
         )
+
+
+FSMType = Union[DFA, NFA, EpsNFA]

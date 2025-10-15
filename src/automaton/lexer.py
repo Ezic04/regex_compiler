@@ -19,7 +19,7 @@ class TransitionTokenType(Enum):
 TransitionToken = Token[TransitionTokenType]
 
 
-def scan_set(src: str, i: int) -> tuple[str, int]:
+def scan_set(src: str, i: int) -> tuple[str, int]:  # AI gen
     """Return the set literal starting at index i in src and the index of the closing brace."""
     start = i
     while i < len(src) and src[i] != '}':
@@ -77,7 +77,7 @@ class AutomatonTokenType(Enum):
 AutomatonToken = Token[AutomatonTokenType]
 
 
-def scan_transition(src: str, i: int) -> tuple[str, int]:
+def scan_transition(src: str, i: int) -> tuple[str, int]:  # AI gen
     """Return the transition literal starting at index i in src and the index of the closing semicolon."""
     start = i
     while i < len(src) and src[i] != ';':

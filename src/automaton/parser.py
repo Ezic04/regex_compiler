@@ -5,7 +5,7 @@ from common.parser_utils import ParserError, Peekable, expect, expect_value, par
 from common.typedef import Symbol, State
 from common.utility import unwrap
 from .lexer import TransitionTokenType, TransitionToken, AutomatonTokenType, AutomatonToken, lex_transition
-from .fsm import DFA, NFA, EpsNFA
+from .fsm import DFA, NFA, EpsNFA, FSMType
 
 
 def parse_transition(tokens: Iterator[TransitionToken]) -> Tuple[State, Optional[Symbol], State | Set[State]]:
@@ -37,7 +37,7 @@ def parse_transition(tokens: Iterator[TransitionToken]) -> Tuple[State, Optional
     return state, symbol, transition_result
 
 
-def parse_automaton(tokens: Iterator[AutomatonToken]) -> DFA | NFA | EpsNFA:
+def parse_automaton(tokens: Iterator[AutomatonToken]) -> FSMType:
     """Parse an automaton (DFA, NFA, or EpsNFA) from tokens."""
     tokens = Peekable(tokens)
     K = TypeVar("K")

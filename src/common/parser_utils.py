@@ -9,7 +9,7 @@ class ParserError(Exception):
 T = TypeVar("T")
 
 
-class Peekable(Iterator[T], Generic[T]):  # ai generated
+class Peekable(Iterator[T], Generic[T]):  # AI gen
     """An iterator that supports peeking at the next element without consuming it."""
 
     def __init__(self, it: Iterator[T]) -> None:
@@ -32,7 +32,7 @@ class Peekable(Iterator[T], Generic[T]):  # ai generated
         return self.__next__()
 
 
-def expect(tokens: Peekable[Token[TokenTypeT]], expected_type: TokenTypeT) -> Token[TokenTypeT]:
+def expect(tokens: Peekable[Token[TokenTypeT]], expected_type: TokenTypeT) -> Token[TokenTypeT]:  # AI gen
     """Expect the next token to be of the given type, otherwise raise ParserError."""
     token = tokens.next()
     if token.type != expected_type:
@@ -42,7 +42,7 @@ def expect(tokens: Peekable[Token[TokenTypeT]], expected_type: TokenTypeT) -> To
     return token
 
 
-def expect_value(tokens: Peekable[Token[TokenTypeT]], ttype: TokenTypeT) -> str:
+def expect_value(tokens: Peekable[Token[TokenTypeT]], ttype: TokenTypeT) -> str:  # AI gen
     """Expect the next token to be of the given type and return its value, otherwise raise ParserError."""
     token = expect(tokens, ttype)
     if token.value is None:
