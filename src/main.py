@@ -5,7 +5,7 @@ from tkinter import Tk
 
 def main() -> None:
     root = Tk()
-    AutomatonGUI(root)
+    RegexGUI(root)
     root.mainloop()
 
 

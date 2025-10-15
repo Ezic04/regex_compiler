@@ -1,11 +1,11 @@
-from typing import FrozenSet, Set, Dict, Tuple, List
-from typedef import State, Symbol
-from .fsm import DFA, NFA, EpsNFA
-
 # pyright: reportPrivateUsage=false
+from typing import FrozenSet, Set, Dict, Tuple, List
+from common.typedef import State, Symbol
+from .fsm import DFA, NFA, EpsNFA
 
 
 def convert_to_nfa(eps_nfa: EpsNFA) -> NFA:
+    """Convert an epsilon-NFA to an NFA using the epsilon-closure method."""
     closures: Dict[State, Set[State]] = {
         state: eps_nfa._eps_closure({state}) for state in eps_nfa.STATES
     }
@@ -29,8 +29,9 @@ def convert_to_nfa(eps_nfa: EpsNFA) -> NFA:
 
 
 def convert_to_dfa(nfa: NFA) -> DFA:
+    """Convert an NFA to a DFA using the power set construction."""
     def collapse_state(states: FrozenSet[State]) -> State:
-        label = "{" + ",".join(sorted(map(str, states))) + "}"
+        label = "${" + ",".join(sorted(map(str, states))) + "}"
         return State(label)
     initial_state_set: FrozenSet[State] = frozenset({nfa.INITIAL_STATE})
     accepting_states: Set[State] = set()

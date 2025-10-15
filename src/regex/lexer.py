@@ -5,6 +5,7 @@ from common.lexer_utils import LexerError, generic_lexer, scan_quoted_ident, is_
 
 
 class RegexTokenType(Enum):
+    """Token types for regex parsing."""
     LPAREN = auto()
     RPAREN = auto()
     STAR = auto()
@@ -17,6 +18,7 @@ RegexToken = Token[RegexTokenType]
 
 
 def regex_next_token(src: str, i: int) -> Tuple[RegexToken, int]:
+    """Get the next token from the source string starting at index i."""
     match c := src[i]:
         case '(':
             return Token(RegexTokenType.LPAREN), i+1
@@ -37,4 +39,5 @@ def regex_next_token(src: str, i: int) -> Tuple[RegexToken, int]:
 
 
 def lex_regex(src: str) -> Iterator[RegexToken]:
+    """Lex the source string into regex tokens."""
     return generic_lexer(src, regex_next_token, RegexTokenType)

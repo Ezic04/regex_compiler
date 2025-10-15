@@ -2,13 +2,14 @@ from typing import Set, Iterator, Tuple, Optional, Iterable, Dict, TypeVar
 from common.token import Token
 from common.lexer_utils import lex_set
 from common.parser_utils import ParserError, Peekable, expect, expect_value, parse_set
-from typedef import Symbol, State
-from utility import unwrap
+from common.typedef import Symbol, State
+from common.utility import unwrap
 from .lexer import TransitionTokenType, TransitionToken, AutomatonTokenType, AutomatonToken, lex_transition
 from .fsm import DFA, NFA, EpsNFA
 
 
 def parse_transition(tokens: Iterator[TransitionToken]) -> Tuple[State, Optional[Symbol], State | Set[State]]:
+    """Parse a transition from tokens."""
     tokens = Peekable(tokens)
     expect(tokens, TransitionTokenType.LPRENT)
     state = State(expect_value(tokens, TransitionTokenType.IDENT))
@@ -37,6 +38,7 @@ def parse_transition(tokens: Iterator[TransitionToken]) -> Tuple[State, Optional
 
 
 def parse_automaton(tokens: Iterator[AutomatonToken]) -> DFA | NFA | EpsNFA:
+    """Parse an automaton (DFA, NFA, or EpsNFA) from tokens."""
     tokens = Peekable(tokens)
     K = TypeVar("K")
     V = TypeVar("V")

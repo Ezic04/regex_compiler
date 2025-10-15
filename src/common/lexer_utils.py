@@ -11,6 +11,7 @@ def generic_lexer(
     next_token_func: Callable[[str, int], tuple[Token[TokenTypeT], int]],
     token_type_cls: Type[TokenTypeT]
 ) -> Iterator[Token[TokenTypeT]]:
+    """A generic lexer that uses the provided next_token_func to tokenize the input string."""
     i = 0
     while i < len(src):
         c = src[i]

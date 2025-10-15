@@ -10,6 +10,8 @@ T = TypeVar("T")
 
 
 class Peekable(Iterator[T], Generic[T]):  # ai generated
+    """An iterator that supports peeking at the next element without consuming it."""
+
     def __init__(self, it: Iterator[T]) -> None:
         self._it = it
         self._peeked: Optional[T] = None
@@ -31,6 +33,7 @@ class Peekable(Iterator[T], Generic[T]):  # ai generated
 
 
 def expect(tokens: Peekable[Token[TokenTypeT]], expected_type: TokenTypeT) -> Token[TokenTypeT]:
+    """Expect the next token to be of the given type, otherwise raise ParserError."""
     token = tokens.next()
     if token.type != expected_type:
         raise ParserError(
@@ -40,6 +43,7 @@ def expect(tokens: Peekable[Token[TokenTypeT]], expected_type: TokenTypeT) -> To
 
 
 def expect_value(tokens: Peekable[Token[TokenTypeT]], ttype: TokenTypeT) -> str:
+    """Expect the next token to be of the given type and return its value, otherwise raise ParserError."""
     token = expect(tokens, ttype)
     if token.value is None:
         raise ParserError(f"Token {ttype.name} has no value")
@@ -47,14 +51,14 @@ def expect_value(tokens: Peekable[Token[TokenTypeT]], ttype: TokenTypeT) -> str:
 
 
 def parse_set(tokens: Iterator[SetToken]) -> Set[str]:
+    """Parse a set literal from tokens and return the set of identifiers."""
     tokens = Peekable(tokens)
     ret: Set[str] = set()
     expect(tokens, SetTokenType.LBRACE)
-    while True:
-        ret.add(expect_value(tokens, SetTokenType.IDENT))
-        if tokens.peek().type != SetTokenType.COMMA:
-            break
+    ret.add(expect_value(tokens, SetTokenType.IDENT))
+    while tokens.peek().type == SetTokenType.COMMA:
         tokens.next()
+        ret.add(expect_value(tokens, SetTokenType.IDENT))
     expect(tokens, SetTokenType.RBRACE)
     expect(tokens, SetTokenType.EOF)
     return ret

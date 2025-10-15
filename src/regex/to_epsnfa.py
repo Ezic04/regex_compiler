@@ -1,9 +1,10 @@
 from .ast import Expr, Symbol, Star, Concat, Or
 from automaton.fsm import EpsNFA
-from typedef import Symbol
+from common.typedef import Symbol
 
 
 def regex_to_epsnfa(expr: Expr) -> EpsNFA:
+    """Convert a regex AST to an equivalent epsilon-NFA."""
     if isinstance(expr, Symbol):
         return EpsNFA.from_symbol(Symbol(expr.value))
     elif isinstance(expr, Star):

@@ -5,6 +5,7 @@ from common.lexer_utils import LexerError,  generic_lexer, scan_quoted_ident, is
 
 
 class TransitionTokenType(Enum):
+    """Token types for transitions in automata."""
     LPRENT = auto()
     RPRENT = auto()
     COMMA = auto()
@@ -19,6 +20,7 @@ TransitionToken = Token[TransitionTokenType]
 
 
 def scan_set(src: str, i: int) -> tuple[str, int]:
+    """Return the set literal starting at index i in src and the index of the closing brace."""
     start = i
     while i < len(src) and src[i] != '}':
         i += 1
@@ -28,6 +30,7 @@ def scan_set(src: str, i: int) -> tuple[str, int]:
 
 
 def transition_next_token(src: str, i: int) -> Tuple[TransitionToken, int]:
+    """Get the next token from the source string starting at index i."""
     match c := src[i]:
         case '(':
             return Token(TransitionTokenType.LPRENT), i+1
@@ -53,10 +56,12 @@ def transition_next_token(src: str, i: int) -> Tuple[TransitionToken, int]:
 
 
 def lex_transition(src: str) -> Iterator[TransitionToken]:
+    """Lex the source string into transition tokens."""
     return generic_lexer(src, transition_next_token, TransitionTokenType)
 
 
 class AutomatonTokenType(Enum):
+    """Token types for automata definitions."""
     EQ = auto()
     SEMICOLON = auto()
     SET = auto()
@@ -73,6 +78,7 @@ AutomatonToken = Token[AutomatonTokenType]
 
 
 def scan_transition(src: str, i: int) -> tuple[str, int]:
+    """Return the transition literal starting at index i in src and the index of the closing semicolon."""
     start = i
     while i < len(src) and src[i] != ';':
         i += 1
@@ -82,6 +88,7 @@ def scan_transition(src: str, i: int) -> tuple[str, int]:
 
 
 def automaton_next_token(src: str, i: int) -> Tuple[AutomatonToken, int]:
+    """Get the next token from the source string starting at index i."""
     match c := src[i]:
         case ';':
             return Token(AutomatonTokenType.SEMICOLON), i+1
@@ -112,4 +119,5 @@ def automaton_next_token(src: str, i: int) -> Tuple[AutomatonToken, int]:
 
 
 def lex_automaton(src: str) -> Iterator[AutomatonToken]:
+    """Lex the source string into automaton tokens."""
     return generic_lexer(src, automaton_next_token, AutomatonTokenType)

@@ -5,7 +5,7 @@ from automaton.convert import convert_to_nfa, convert_to_dfa
 from automaton.lexer import lex_automaton
 from automaton.parser import parse_automaton
 from automaton.fsm import DFA, NFA, EpsNFA
-from typedef import Symbol, State
+from src.common.typedef import Symbol, State
 
 
 def tests() -> None:

@@ -2,17 +2,29 @@ from __future__ import annotations
 from typing import Generic, TypeVar, Set, Dict, Tuple, FrozenSet, Iterable, List
 from abc import ABC, abstractmethod
 from functools import reduce
-from typedef import State, Symbol
+from common.typedef import State, Symbol
 
 
 class FSMError(Exception):
+    """Exception raised for errors in the FSM definition."""
     pass
 
 
+# Either a set of states (for NFA/EpsNFA) or a single state (for DFA)
 TransitionResult = TypeVar("TransitionResult", Set[State], State)
 
 
 class FSM(Generic[TransitionResult], ABC):
+    """A generic finite state machine (FSM) class.
+
+    Attributes:
+        STATES: Set of all states in the FSM.
+        ALPHABET: Set of all symbols in the FSM alphabet.
+        INITIAL_STATE: The initial state of the FSM.
+        ACCEPTING_STATES: Set of accepting (final) states.
+        TRANSITIONS: Transition function mapping (state, symbol) to result.
+    """
+
     def __init__(
             self,
             states: Iterable[State],
@@ -40,10 +52,12 @@ class FSM(Generic[TransitionResult], ABC):
 
     @abstractmethod
     def _delta(self, state: State, symbol: Symbol) -> TransitionResult:
+        """Transition function."""
         pass
 
     @abstractmethod
     def accepts(self, word: Iterable[Symbol]) -> bool:
+        """Check if the FSM accepts the given word."""
         pass
 
 
@@ -70,6 +84,12 @@ class NFA(FSM[Set[State]]):
 
 
 class EpsNFA(NFA):
+    """NFA with epsilon transitions.
+
+    Additional Attributes:
+        EPS_TRANSITIONS: Epsilon transition function mapping state to set of states.
+        _id_counter: Class-level counter for generating unique state names.
+    """
     _id_counter = 0
 
     def __init__(
@@ -94,6 +114,7 @@ class EpsNFA(NFA):
         return self.EPS_TRANSITIONS.get(state, set())
 
     def _eps_closure(self, states: Set[State]) -> Set[State]:
+        """Compute the epsilon-closure of a set of states."""
         closure: Set[State] = set(states)
         stack: List[State] = list(states)
         while stack:
@@ -117,10 +138,11 @@ class EpsNFA(NFA):
     @classmethod
     def _fresh_state(cls, base: str = "S") -> State:
         cls._id_counter += 1
-        return State(f"{base}{cls._id_counter}")
+        return State(f"${base}{cls._id_counter}")
 
     @classmethod
     def _rename_states(cls, nfa: EpsNFA, prefix: str) -> Tuple[Dict[State, State], EpsNFA]:
+        """Rename states in the given NFA to avoid collisions."""
         mapping: Dict[State, State] = {
             s: cls._fresh_state(prefix) for s in nfa.STATES}
         new_transitions: Dict[Tuple[State, Symbol], Set[State]] = {
@@ -140,12 +162,14 @@ class EpsNFA(NFA):
 
     @classmethod
     def from_symbol(cls, symbol: Symbol) -> EpsNFA:
+        """Return an EpsNFA that recognizes a single symbol."""
         initial_state = cls._fresh_state("symbol")
         accepting_state = cls._fresh_state("symbol")
         return EpsNFA({initial_state, accepting_state}, {symbol}, initial_state, {accepting_state}, {(initial_state, symbol): {accepting_state}}, {})
 
     @classmethod
     def star(cls, operand: EpsNFA) -> EpsNFA:
+        """Return an NFA that recognizes the Kleene star of the language accepted by the given NFA."""
         _, operand = cls._rename_states(operand, "star")
         initial_state = cls._fresh_state("star")
         return EpsNFA(
@@ -163,6 +187,7 @@ class EpsNFA(NFA):
 
     @classmethod
     def concat(cls, lhs: EpsNFA, rhs: EpsNFA) -> EpsNFA:
+        """Return an NFA that recognizes the concatenation of the languages accepted by the two given NFAs."""
         _, lhs = cls._rename_states(lhs, "concat_lhs")
         _, rhs = cls._rename_states(rhs, "concat_rhs")
         keys = lhs.ACCEPTING_STATES | lhs.EPS_TRANSITIONS.keys() | rhs.EPS_TRANSITIONS.keys()
@@ -182,7 +207,8 @@ class EpsNFA(NFA):
         )
 
     @classmethod
-    def union(cls, lhs: "EpsNFA", rhs: "EpsNFA") -> "EpsNFA":
+    def union(cls, lhs: EpsNFA, rhs: EpsNFA) -> EpsNFA:
+        """Return an NFA that recognizes the union of the languages accepted by the two given NFAs."""
         _, lhs = cls._rename_states(lhs, "union_lhs")
         _, rhs = cls._rename_states(rhs, "union_rhs")
         initial_state = cls._fresh_state("union")
