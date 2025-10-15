@@ -1,13 +1,5 @@
 # type: ignore
-from gui import *
-from tkinter import Tk
-
-
-def main() -> None:
-    root = Tk()
-    RegexGUI(root)
-    root.mainloop()
-
+from gui import main
 
 if __name__ == "__main__":
     main()
