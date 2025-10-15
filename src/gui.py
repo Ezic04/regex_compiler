@@ -16,8 +16,8 @@ import networkx as nx
 import traceback
 import sys
 
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
-                             QHBoxLayout, QTextEdit, QPushButton, QLabel, 
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
+                             QHBoxLayout, QTextEdit, QPushButton, QLabel,
                              QLineEdit, QMessageBox, QSplitter)
 from PyQt5.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -163,7 +163,7 @@ class RegexGUI(QMainWindow):
 
         # Input frame with side-by-side text fields
         input_layout = QHBoxLayout()
-        
+
         # Left side - Regex input
         left_layout = QVBoxLayout()
         left_layout.addWidget(QLabel("Regex input:"))
@@ -179,7 +179,7 @@ class RegexGUI(QMainWindow):
         self.spec_text.setMaximumHeight(100)
         right_layout.addWidget(self.spec_text)
         input_layout.addLayout(right_layout)
-        
+
         main_layout.addLayout(input_layout)
 
         # Buttons row 1
@@ -187,15 +187,15 @@ class RegexGUI(QMainWindow):
         btn_parse_regex = QPushButton("Parse Regex and Show")
         btn_parse_regex.clicked.connect(self.on_parse_regex)
         btn_layout1.addWidget(btn_parse_regex)
-        
+
         btn_parse_spec = QPushButton("Parse Automaton Spec and Show")
         btn_parse_spec.clicked.connect(self.on_parse_spec)
         btn_layout1.addWidget(btn_parse_spec)
-        
+
         btn_clear = QPushButton("Clear")
         btn_clear.clicked.connect(self.clear)
         btn_layout1.addWidget(btn_clear)
-        
+
         main_layout.addLayout(btn_layout1)
 
         # Buttons row 2 - Conversion
@@ -203,15 +203,15 @@ class RegexGUI(QMainWindow):
         self.btn_eps_to_nfa = QPushButton("Convert ε-NFA → NFA")
         self.btn_eps_to_nfa.clicked.connect(self.on_convert_eps_to_nfa)
         btn_layout2.addWidget(self.btn_eps_to_nfa)
-        
+
         self.btn_nfa_to_dfa = QPushButton("Convert NFA → DFA")
         self.btn_nfa_to_dfa.clicked.connect(self.on_convert_nfa_to_dfa)
         btn_layout2.addWidget(self.btn_nfa_to_dfa)
-        
+
         btn_redraw = QPushButton("Redraw Graph")
         btn_redraw.clicked.connect(self.on_redraw)
         btn_layout2.addWidget(btn_redraw)
-        
+
         main_layout.addLayout(btn_layout2)
 
         # Test word frame
@@ -219,15 +219,15 @@ class RegexGUI(QMainWindow):
         test_layout.addWidget(QLabel("Test word:"))
         self.test_entry = QLineEdit()
         test_layout.addWidget(self.test_entry)
-        
+
         btn_check = QPushButton("Check Acceptance")
         btn_check.clicked.connect(self.on_check_word)
         test_layout.addWidget(btn_check)
-        
+
         self.acceptance_label = QLabel("")
         self.acceptance_label.setMinimumWidth(150)
         test_layout.addWidget(self.acceptance_label)
-        
+
         main_layout.addLayout(test_layout)
 
         # Matplotlib canvas
@@ -240,7 +240,7 @@ class RegexGUI(QMainWindow):
         # Status bar
         self.status_bar = self.statusBar()
         self.set_status("Ready")
-        
+
         self.update_conversion_buttons()
 
     def set_status(self, text: str):
@@ -255,6 +255,7 @@ class RegexGUI(QMainWindow):
         self.test_entry.clear()
         self.acceptance_label.setText("")
         self.ax.clear()
+        self.ax.set_axis_off()
         self.canvas.draw()
         self.set_status("Cleared")
         self.update_conversion_buttons()
