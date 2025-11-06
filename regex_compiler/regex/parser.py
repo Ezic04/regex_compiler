@@ -1,5 +1,5 @@
 from typing import Iterator
-from common.parser_utils import ParserError, Peekable, expect, expect_value
+from ..common.parser_utils import ParserError, Peekable, expect, expect_value
 from .lexer import RegexTokenType, RegexToken
 from .ast import Expr, Or, Concat, Star, Symbol
 

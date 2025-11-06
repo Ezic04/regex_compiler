@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from typing import Tuple, Iterator
-from common.token import Token
-from common.lexer_utils import LexerError,  generic_lexer, scan_quoted_ident, is_not_eps
+from ..common.token import Token
+from ..common.lexer_utils import LexerError,  generic_lexer, scan_quoted_ident, is_not_eps
 
 
 class TransitionTokenType(Enum):

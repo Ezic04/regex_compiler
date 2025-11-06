@@ -11,10 +11,42 @@ A Python GUI application for visualizing and converting finite state machines (F
 
 ## Usage
 
-Run the GUI:
+### 1) Prebuilt binary (Linux)
+If you prefer not to install Python or dependencies, a prebuilt Linux (x86_64) binary may be available under the repository's Releases. Download `regex_compiler`, make it executable, and run it:
+
 ```bash
-python src/main.py
+chmod +x regex_compiler
+./regex_compiler
 ```
+
+### 2) Run from source
+Set up a virtual environment, install dependencies, and start the GUI:
+
+```bash
+# create & activate venv
+python -m venv .venv
+source .venv/bin/activate
+
+# install dependencies
+pip install -r requirements.txt
+
+# run the app
+python -m regex_compiler.main
+```
+
+### 3) Build a single executable
+Install PyInstaller (not included in requirements.txt) and build a one-file binary:
+
+```bash
+pip install pyinstaller
+pyinstaller --onefile --name regex_compiler regex_compiler/main.py
+```
+
+The resulting binary will be at `dist/regex_compiler`.
+
+## Documentation
+
+Documentation is generated with pdoc: pdoc src --output-dir docs --include-undocumented
 
 ### Input Examples
 
@@ -23,16 +55,17 @@ python src/main.py
 (1|2)*33*
 ```
 
-**Automaton Specification (ε-NFA):**
+**Automaton Specification**
+
+**ε-NFA Example:**
 ```
 Q = {i, q, f};
 A = {0, 1};
-I = i;
-F = {f};
+I = i;F = {f};
 (i, 1) -> {q, f};
-(q, 0) -> {f};
-(q,'') -> {f};
-(f, 0) -> {f};
+(q, 0) -> {q};
+(q, 1) -> {f};
+(f, '') -> {i};
 ```
 
 **DFA Example:**
@@ -69,6 +102,6 @@ F = {p};
 ## Requirements
 
 - Python 3.x
-- tkinter
+- PyQt5
 - matplotlib
 - networkx

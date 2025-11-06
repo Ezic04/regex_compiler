@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Generic, TypeVar, Set, Dict, Tuple, FrozenSet, Iterable, List, Union
 from abc import ABC, abstractmethod
 from functools import reduce
-from common.typedef import State, Symbol
+from ..common.typedef import State, Symbol
 
 
 class FSMError(Exception):
@@ -15,15 +15,7 @@ TransitionResult = TypeVar("TransitionResult", Set[State], State)
 
 
 class FSM(Generic[TransitionResult], ABC):
-    """A generic finite state machine (FSM) class.
-
-    Attributes:
-        STATES: Set of all states in the FSM.
-        ALPHABET: Set of all symbols in the FSM alphabet.
-        INITIAL_STATE: The initial state of the FSM.
-        ACCEPTING_STATES: Set of accepting (final) states.
-        TRANSITIONS: Transition function mapping (state, symbol) to result.
-    """
+    """A generic finite state machine (FSM) class."""
 
     def __init__(
             self,
@@ -34,11 +26,15 @@ class FSM(Generic[TransitionResult], ABC):
             transitions: Dict[Tuple[State, Symbol], TransitionResult]
     ) -> None:
         self.STATES: FrozenSet[State] = frozenset(states)
+        """Set of all states in the FSM."""
         self.ALPHABET: FrozenSet[Symbol] = frozenset(alphabet)
+        """Set of all symbols in the FSM alphabet."""
         self.INITIAL_STATE: State = initial_state
+        """The initial state of the FSM."""
         if self.INITIAL_STATE not in self.STATES:
             raise FSMError("Initial state not in states")
         self.ACCEPTING_STATES: FrozenSet[State] = frozenset(accepting_states)
+        """Set of accepting (final) states."""
         if invalid := self.ACCEPTING_STATES - self.STATES:
             raise FSMError(f"Invalid accepting states: {invalid}")
         if invalid := {key[0] for key in transitions.keys()} - self.STATES:
@@ -49,6 +45,7 @@ class FSM(Generic[TransitionResult], ABC):
             raise FSMError(f"Invalid states in transitions: {invalid}")
         self.TRANSITIONS: Dict[Tuple[State, Symbol],
                                TransitionResult] = transitions
+        """Transition function mapping (state, symbol) to result."""
 
     @abstractmethod
     def _delta(self, state: State, symbol: Symbol) -> TransitionResult:
@@ -129,6 +126,7 @@ class EpsNFA(NFA):
         return self._eps_closure(super()._get_initial_state_set())
 
     def _next_states(self, states: Set[State], symbol: Symbol) -> Set[State]:
+        print(states, symbol)
         return self._eps_closure({
             next_state
             for state in self._eps_closure(states)
@@ -224,3 +222,4 @@ class EpsNFA(NFA):
 
 
 FSMType = Union[DFA, NFA, EpsNFA]
+"""A type alias for any finite state machine (DFA, NFA, or EpsNFA)."""

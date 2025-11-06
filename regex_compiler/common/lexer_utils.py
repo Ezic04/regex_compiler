@@ -25,10 +25,12 @@ def generic_lexer(
 
 
 def is_valid_ident_char(c: str) -> bool:
+    """Check if character is valid in an identifier."""
     return c.isalnum() or c == '_' or c == '-'
 
 
 def scan_quoted_ident(src: str, i: int) -> Tuple[str, int]:
+    """Scan a quoted identifier starting at position i in src."""
     i += 1
     start = i
     while i < len(src) and src[i] != '\'':
@@ -42,11 +44,13 @@ def scan_quoted_ident(src: str, i: int) -> Tuple[str, int]:
 
 
 def is_not_eps(ident: str):
+    """Raise an error if the identifier is empty (reserved for epsilon)."""
     if ident == '':
         raise LexerError("Empty identifier is reserved for epsilon")
 
 
 def set_next_token(src: str, i: int) -> Tuple[SetToken, int]:
+    """Get the next token from the source string starting at index i for set parsing."""
     match c := src[i]:
         case '{':
             return Token(SetTokenType.LBRACE), i+1
@@ -65,4 +69,5 @@ def set_next_token(src: str, i: int) -> Tuple[SetToken, int]:
 
 
 def lex_set(src: str) -> Iterator[SetToken]:
+    """Lex the source string into set tokens."""
     return generic_lexer(src, set_next_token, SetTokenType)

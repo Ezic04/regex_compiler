@@ -1,9 +1,9 @@
 from typing import Set, Iterator, Tuple, Optional, Iterable, Dict, TypeVar
-from common.token import Token
-from common.lexer_utils import lex_set
-from common.parser_utils import ParserError, Peekable, expect, expect_value, parse_set
-from common.typedef import Symbol, State
-from common.utility import unwrap
+from ..common.token import Token
+from ..common.lexer_utils import lex_set
+from ..common.parser_utils import ParserError, Peekable, expect, expect_value, parse_set
+from ..common.typedef import Symbol, State
+from ..common.utility import unwrap
 from .lexer import TransitionTokenType, TransitionToken, AutomatonTokenType, AutomatonToken, lex_transition
 from .fsm import DFA, NFA, EpsNFA, FSMType
 

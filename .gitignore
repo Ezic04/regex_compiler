@@ -1,10 +1,14 @@
 #vscode
-.vscode
+.vscode/
 
 #python
-.venv
-__init__.py
-__pycache__
+.venv/
+__pycache__/
+
+#dist
+build/
+dist/
+*.spec
 
 
 notes.txt

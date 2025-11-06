@@ -1,27 +1,25 @@
 # type: ignore
 # AI gen
-from common.parser_utils import ParserError
-from common.typedef import Symbol
-from regex.ast import Expr
-from automaton.fsm import DFA, NFA, EpsNFA, FSMType
-from automaton.parser import parse_automaton
-from automaton.lexer import lex_automaton
-from automaton.convert import convert_to_nfa, convert_to_dfa
-from regex.to_epsnfa import regex_to_epsnfa
-from regex.parser import parse_regex
-from regex.lexer import lex_regex
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
+                             QHBoxLayout, QTextEdit, QPushButton, QLabel,
+                             QLineEdit, QMessageBox)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+from .common.parser_utils import ParserError
+from .common.typedef import Symbol
+from .regex.ast import Expr
+from .automaton.fsm import DFA, NFA, EpsNFA, FSMType
+from .automaton.parser import parse_automaton
+from .automaton.lexer import lex_automaton
+from .automaton.convert import convert_to_nfa, convert_to_dfa
+from .regex.to_epsnfa import regex_to_epsnfa
+from .regex.parser import parse_regex
+from .regex.lexer import lex_regex
 from typing import Optional, List
 import matplotlib.pyplot as plt
 import networkx as nx
 import traceback
 import sys
-
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
-                             QHBoxLayout, QTextEdit, QPushButton, QLabel,
-                             QLineEdit, QMessageBox, QSplitter)
-from PyQt5.QtCore import Qt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 
 def _format_value(value) -> str:
@@ -129,22 +127,7 @@ def draw_fsm_on_axes(ax: plt.axis, fsm: FSMType, layout_seed: int = 1):
 
 
 class RegexGUI(QMainWindow):
-    """GUI for regex/automaton visualization with conversion and word testing.
-
-    Attributes:
-        current_fsm: Currently loaded FSM (DFA, NFA, or EpsNFA).
-        layout_seed: Seed for graph layout algorithm (increments on redraw).
-        regex_text: Text widget for regex input.
-        spec_text: Text widget for automaton specification input.
-        test_entry: Line edit for word acceptance testing.
-        acceptance_label: Label showing acceptance test result.
-        fig: Matplotlib figure for graph rendering.
-        ax: Matplotlib axes for graph rendering.
-        canvas: Matplotlib canvas embedded in Qt.
-        status_bar: Status bar at bottom of window.
-        btn_eps_to_nfa: Button for ε-NFA to NFA conversion.
-        btn_nfa_to_dfa: Button for NFA to DFA conversion.
-    """
+    """GUI for regex/automaton visualization with conversion and word testing."""
 
     def __init__(self):
         super().__init__()
@@ -312,6 +295,7 @@ class RegexGUI(QMainWindow):
 
     def on_convert_eps_to_nfa(self):
         """Convert the current ε-NFA to an NFA."""
+        self.layout_seed = 1
         if not isinstance(self.current_fsm, EpsNFA):
             self.set_status("Load an ε-NFA before converting to NFA")
             return
@@ -326,6 +310,7 @@ class RegexGUI(QMainWindow):
 
     def on_convert_nfa_to_dfa(self):
         """Convert the current NFA to a DFA."""
+        self.layout_seed = 1
         if self.current_fsm is None:
             self.set_status("No automaton to convert")
             return
@@ -346,6 +331,7 @@ class RegexGUI(QMainWindow):
 
     def on_parse_regex(self):
         """Parse regex and build ε-NFA."""
+        self.layout_seed = 1
         txt = self.regex_text.toPlainText().strip()
         if not txt:
             self.set_status("Empty regex input")
@@ -360,6 +346,7 @@ class RegexGUI(QMainWindow):
 
     def on_parse_spec(self):
         """Parse automaton specification and create FSM."""
+        self.layout_seed = 1
         txt = self.spec_text.toPlainText().strip()
         if not txt:
             self.set_status("Empty spec input")
@@ -373,6 +360,7 @@ class RegexGUI(QMainWindow):
 
     def on_check_word(self):
         """Test if current automaton accepts the input word."""
+        self.layout_seed = 1
         if self.current_fsm is None:
             self.acceptance_label.setText("No automaton loaded")
             self.acceptance_label.setStyleSheet("color: red")

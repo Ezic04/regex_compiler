@@ -1,6 +1,6 @@
 from .ast import Expr, Symbol, Star, Concat, Or
-from automaton.fsm import EpsNFA
-from common.typedef import Symbol
+from ..automaton.fsm import EpsNFA
+from ..common.typedef import Symbol
 
 
 def regex_to_epsnfa(expr: Expr) -> EpsNFA:  # AI gen

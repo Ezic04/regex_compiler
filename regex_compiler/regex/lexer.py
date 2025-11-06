@@ -1,7 +1,7 @@
 from enum import Enum, auto
 from typing import Tuple, Iterator
-from common.token import Token
-from common.lexer_utils import LexerError, generic_lexer, scan_quoted_ident, is_not_eps
+from ..common.token import Token
+from ..common.lexer_utils import LexerError, generic_lexer, scan_quoted_ident, is_not_eps
 
 
 class RegexTokenType(Enum):
@@ -15,6 +15,7 @@ class RegexTokenType(Enum):
 
 
 RegexToken = Token[RegexTokenType]
+"""A token specialized for regex parsing."""
 
 
 def regex_next_token(src: str, i: int) -> Tuple[RegexToken, int]:

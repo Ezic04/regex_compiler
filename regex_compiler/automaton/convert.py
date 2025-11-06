@@ -1,6 +1,6 @@
 # pyright: reportPrivateUsage=false
 from typing import FrozenSet, Set, Dict, Tuple, List
-from common.typedef import State, Symbol
+from ..common.typedef import State, Symbol
 from .fsm import DFA, NFA, EpsNFA
 
 
