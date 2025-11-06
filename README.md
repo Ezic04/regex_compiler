@@ -23,14 +23,10 @@ chmod +x regex_compiler
 Set up a virtual environment, install dependencies, and start the GUI:
 
 ```bash
-# create & activate venv
 python -m venv .venv
 source .venv/bin/activate
 
-# install dependencies
 pip install -r requirements.txt
-
-# run the app
 python -m regex_compiler.main
 ```
 
@@ -100,7 +96,12 @@ F = {p};
 
 ## Documentation
 
-Documentation is generated with pdoc: pdoc src --output-dir docs --include-undocumented
+Documentation is generated with pdoc: 
+
+```bash
+pip install pdoc
+pdoc regex_compiler --output-dir docs --include-undocumented
+```
 
 ## Tests
 
