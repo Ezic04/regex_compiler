@@ -44,11 +44,7 @@ pyinstaller --onefile --name regex_compiler regex_compiler/main.py
 
 The resulting binary will be at `dist/regex_compiler`.
 
-## Documentation
-
-Documentation is generated with pdoc: pdoc src --output-dir docs --include-undocumented
-
-### Input Examples
+## Input Examples
 
 **Regex:**
 ```
@@ -61,7 +57,8 @@ Documentation is generated with pdoc: pdoc src --output-dir docs --include-undoc
 ```
 Q = {i, q, f};
 A = {0, 1};
-I = i;F = {f};
+I = i;
+F = {f};
 (i, 1) -> {q, f};
 (q, 0) -> {q};
 (q, 1) -> {f};
@@ -92,12 +89,31 @@ F = {p};
 - **Test word**: Check if current automaton accepts input string
 - **Clear**: Reset all inputs and visualization
 
+
 ## Visual Legend
 
 - **Green Square**: Initial state
 - **Gold circle with orange border**: Accepting state
 - **Light blue circle**: Regular state
 - **Green square with orange border**: Initial + accepting state
+
+
+## Documentation
+
+Documentation is generated with pdoc: pdoc src --output-dir docs --include-undocumented
+
+## Tests
+
+Tests are written with pytest.
+
+Run the test suite:
+
+```bash
+pip install pytest
+pytest
+```
+
+
 
 ## Requirements
 
